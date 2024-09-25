@@ -29,3 +29,13 @@
 )
 
 (areaRectangulo)
+
+
+(defun areaCirculo()
+    (princ "Radio: ")
+    (setq r (read))
+
+    (format t "Area = ~a~%" (* 3.1416 r r))
+)
+
+(areaCirculo)
