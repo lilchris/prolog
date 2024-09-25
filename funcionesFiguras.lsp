@@ -1,4 +1,6 @@
 (defun areaTriangulo()
+    (princ "Triángulo")
+    (princ #\Newline)
     (princ "Base: ")
     (setq b (read))
     (princ "Altura: ")
@@ -10,6 +12,8 @@
 
 
 (defun areaCuadrado()
+    (princ "Cuadrado")
+    (princ #\Newline)
     (princ "Lado: ")
     (setq b (read))
     
@@ -20,6 +24,8 @@
 
 
 (defun areaRectangulo()
+    (princ "Rectángulo")
+    (princ #\Newline)
     (princ "Base: ")
     (setq b (read))
     (princ "Altura: ")
@@ -29,6 +35,20 @@
 )
 
 (areaRectangulo)
+
+(defun areaRombo()
+    (princ "Rombo")
+    (princ #\Newline)
+    (princ "Diagonal mayor: ")
+    (setq D (read))
+    (princ "Diagonal menor: ")
+    (setq d (read))
+    
+    
+    (format t "Area = ~a~%" (* 0.5 D d))
+)
+
+(areaRombo)
 
 
 (defun areaCirculo()
