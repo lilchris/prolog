@@ -59,3 +59,19 @@
 )
 
 (areaCirculo)
+
+(defun areaTrapecio()
+    (princ "Trapecio")
+    (princ #\Newline)
+    (princ "Base mayor: ")
+    (setq B (read))
+    (princ "Base menor: ")
+    (setq b (read))
+    (princ "altura: ")
+    (setq h (read))
+    
+    
+    (format t "Area = ~a~%" (* (+ B b) h 0.5))
+)
+
+(areaTrapecio)
