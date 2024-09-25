@@ -17,3 +17,15 @@
 )
 
 (areaCuadrado)
+
+
+(defun areaRectangulo()
+    (princ "Base: ")
+    (setq b (read))
+    (princ "Altura: ")
+    (setq h (read))
+    
+    (format t "Area = ~a~%" (* b h))
+)
+
+(areaRectangulo)
