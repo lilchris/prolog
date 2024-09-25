@@ -7,3 +7,13 @@
 )
 
 (areaTriangulo)
+
+
+(defun areaCuadrado()
+    (princ "Lado: ")
+    (setq b (read))
+    
+    (format t "Area = ~a~%" (* b b))
+)
+
+(areaCuadrado)
