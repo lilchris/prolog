@@ -145,3 +145,48 @@
     (format t "Volumen = ~a~%" (* 3.1416 R R h)))  
 
 (volumenCilindro)
+
+(defun volumenCono()
+    (princ "Cono")
+    (princ #\Newline)
+    (princ "Radio: ")
+    (setq R (read))
+    (princ "altura: ")
+    (setq h (read))
+    
+    (format t "Volumen = ~a~%" (* 3.1416 R R h 0.3)))  
+
+(volumenCono)
+
+(defun volumenEsfera()
+    (princ "Esfera")
+    (princ #\Newline)
+    (princ "Radio: ")
+    (setq R (read))
+    
+    (format t "Volumen = ~a~%" (* 3.1416 R R R 4 0.3)))  
+
+(volumenEsfera)
+
+(defun areaRectangulo2()
+    (princ "Rectángulo")
+    (princ #\Newline)
+    (princ "Base: ")
+    (setq b (read))
+    (princ "Altura: ")
+    (setq h (read))
+    
+    (* b h)
+)
+
+(defun volumenPiramide()
+    (princ "Pirámide")
+    (princ #\Newline)
+    (setq base (areaRectangulo2))
+    (princ "Altura: ")
+    (setq h (read))
+    
+    (format t "Volumen = ~a~%" (/ (* base h) 3)))  
+
+(volumenPiramide)
+
