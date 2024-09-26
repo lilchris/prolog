@@ -52,6 +52,8 @@
 
 
 (defun areaCirculo()
+    (princ "Círculo")
+    (princ #\Newline)
     (princ "Radio: ")
     (setq r (read))
 
@@ -190,3 +192,23 @@
 
 (volumenPiramide)
 
+
+(defun areaCirculo2()
+    (princ "Base")
+    (princ #\Newline)
+    (princ "Radio: ")
+    (setq r (read))
+
+    (* 3.1416 r r)
+)
+
+(defun volumenCilindro()
+    (princ "Cilindro")
+    (princ #\Newline)
+    (setq base (areaCirculo2))
+    (princ "Altura: ")
+    (setq h (read))
+    
+    (format t "Volumen = ~a~%" (* base h 3)))  
+
+(volumenCilindro)
