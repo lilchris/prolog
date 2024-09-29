@@ -13,16 +13,17 @@
 (print x)  
 
 ;;eliminar el primer y ultimo elemento
-;;eliminar el primer y ultimo elemento
+(setq y '(a b c d e f g h)) 
 
-(setq y '(a b c d e f g h))  
-(setq x (cons (cadr y) (cons (caddr y) (cons (cadddr y)'()
-    
-    )
-                        )
-        )
-)
-(print x)  
+(setq x (cons (cadr y)                
+            (cons (caddr y)         
+            (cons (cadddr y)  
+            (cons (car(cddddr y)) 
+            (cons (cadr(cddddr y)) 
+            (cons (caddr(cddddr y)) '())  )))))
+)  
+
+(print x) 
 
 
 ;;sumar los primeros 3 nums
