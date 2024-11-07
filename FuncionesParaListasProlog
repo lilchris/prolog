@@ -1,0 +1,129 @@
+FUNCIONES POPULARES PARA TRABAJAR CON LISTAS
+
+1. member(Elemento, Lista): Verifica si un elemento está en una lista o devuelve los elementos cuando se consulta.
+
+?- member(X, [a, b, c]).
+X = a ;
+X = b ;
+X = c.
+
+
+2. append(Lista1, Lista2, Lista3): Concatena dos listas en una tercera.
+
+?- append([1, 2], [3, 4], Resultado).
+Resultado = [1, 2, 3, 4].
+
+
+3. length(Lista, Longitud): Calcula la longitud de una lista.
+
+?- length([a, b, c], Longitud).
+Longitud = 3.
+
+
+4. reverse(Lista, ListaInvertida): Invierte el orden de los elementos en una lista.
+
+?- reverse([1, 2, 3], ListaInvertida).
+ListaInvertida = [3, 2, 1].
+
+
+5. select(Elemento, Lista, ListaSinElemento): Elimina un elemento específico de la lista.
+
+?- select(b, [a, b, c], Resultado).
+Resultado = [a, c].
+
+
+6. nth0(N, Lista, Elemento): Obtiene el elemento en la posición N (iniciando desde 0) de la lista.
+
+?- nth0(1, [a, b, c], Elemento).
+Elemento = b.
+
+
+7. nth1(N, Lista, Elemento): Similar a nth0, pero el índice comienza desde 1.
+
+?- nth1(2, [a, b, c], Elemento).
+Elemento = b.
+
+
+8. last(Lista, UltimoElemento): Obtiene el último elemento de una lista.
+
+?- last([a, b, c], UltimoElemento).
+UltimoElemento = c.
+
+
+9. max_list(Lista, Max): Encuentra el valor máximo en una lista de números.
+
+?- max_list([5, 2, 8, 1], Max).
+Max = 8.
+
+
+10. min_list(Lista, Min): Encuentra el valor mínimo en una lista de números.
+
+?- min_list([5, 2, 8, 1], Min).
+Min = 1.
+
+
+FUNCIONES DE BÚSQUEDA Y FILTRADO
+
+11. findall(Elemento, Condición, Lista): Busca todos los elementos que cumplen una condición y los almacena en una lista.
+
+?- findall(X, member(X, [1, 2, 3, 4]), Lista).
+Lista = [1, 2, 3, 4].
+
+
+12. bagof(Elemento, Condición, Lista): Similar a findall, pero agrupa elementos según variables libres (no unificadas) en la consulta.
+
+?- bagof(X, member(X, [1, 2, 3, 4]), Lista).
+Lista = [1, 2, 3, 4].
+
+
+13. setof(Elemento, Condición, ListaOrdenada): Como bagof, pero elimina duplicados y ordena el resultado.
+
+?- setof(X, member(X, [4, 2, 4, 1]), Lista).
+Lista = [1, 2, 4].
+
+
+OTRAS FUNCIONES POPULARES
+
+14. sort(Lista, ListaOrdenada): Ordena una lista y elimina duplicados.
+
+?- sort([4, 2, 4, 1], ListaOrdenada).
+ListaOrdenada = [1, 2, 4].
+
+
+15. delete(Lista, Elemento, ListaSinElemento): Elimina todas las apariciones de un elemento en la lista.
+
+?- delete([a, b, a, c], a, ListaSinElemento).
+ListaSinElemento = [b, c].
+
+
+16. include(Predicado, Lista, ListaFiltrada): Filtra elementos de una lista que cumplen con un predicado.
+
+% Filtra números pares
+?- include(even, [1, 2, 3, 4], ListaFiltrada).
+ListaFiltrada = [2, 4].
+
+
+17. exclude(Predicado, Lista, ListaFiltrada): Filtra elementos de una lista que NO cumplen con un predicado.
+
+% Excluye números pares
+?- exclude(even, [1, 2, 3, 4], ListaFiltrada).
+ListaFiltrada = [1, 3].
+
+
+18. maplist(Predicado, Lista): Aplica un predicado a cada elemento de la lista. Puede trabajar con más de una lista (para operaciones paralelas).
+
+% Duplica cada elemento
+?- maplist(double, [1, 2, 3], Resultados).
+Resultados = [2, 4, 6].
+
+
+19. flatten(ListaAnidada, ListaPlano): Aplana una lista con sublistas anidadas en una sola lista.
+
+?- flatten([1, [2, [3, 4]], 5], ListaPlano).
+ListaPlano = [1, 2, 3, 4, 5].
+
+
+20. sum_list(Lista, Suma): Calcula la suma de los elementos en una lista de números.
+
+?- sum_list([1, 2, 3, 4], Suma).
+Suma = 10.
