@@ -1,0 +1,46 @@
+Problema: Los hermanos y sus mascotas
+
+Cuatro hermanos (Ana, Bruno, Carla y Daniel) tienen cada uno una mascota
+diferente (perro, gato, loro y pez). Sabemos que:
+
+Ana no tiene un perro ni un pez.  Bruno no tiene un gato.  Carla tiene
+un animal que no es el pez.  Daniel tiene un loro o un pez.  Pregunta:
+¿Qué mascota tiene cada hermano?
+
+Representación en Prolog: Define los hermanos y las mascotas como
+individuos.  Utiliza reglas y hechos basados en las pistas para
+determinar qué mascota tiene cada hermano.
+
+Objetivo: Escribir un programa en Prolog que determine la asignación
+correcta de mascotas para cada hermano en función de las pistas dadas.
+
+hermano(ana).
+hermano(bruno).
+hermano(carla).
+hermano(daniel).
+
+mascota(perro).
+mascota(gato).
+mascota(loro).
+mascota(pez).
+
+tiene_mascota(ana, Mascota) :- mascota(Mascota), Mascota \= perro, Mascota \= pez.
+tiene_mascota(bruno, Mascota) :- mascota(Mascota), Mascota \= gato.
+tiene_mascota(carla, Mascota) :- mascota(Mascota), Mascota \= pez.
+tiene_mascota(daniel, Mascota) :- mascota(Mascota), (Mascota = loro ; Mascota = pez).
+
+asignacion :-
+    tiene_mascota(ana, MascotaAna),
+    tiene_mascota(bruno, MascotaBruno),
+    tiene_mascota(carla, MascotaCarla),
+    tiene_mascota(daniel, MascotaDaniel),
+    MascotaAna \= MascotaBruno,
+    MascotaAna \= MascotaCarla,
+    MascotaAna \= MascotaDaniel,
+    MascotaBruno \= MascotaCarla,
+    MascotaBruno \= MascotaDaniel,
+    MascotaCarla \= MascotaDaniel,
+    write('Ana tiene: '), write(MascotaAna), nl,
+    write('Bruno tiene: '), write(MascotaBruno), nl,
+    write('Carla tiene: '), write(MascotaCarla), nl,
+    write('Daniel tiene: '), write(MascotaDaniel), nl.
