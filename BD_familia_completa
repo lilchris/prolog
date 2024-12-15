@@ -131,6 +131,29 @@ madrede(mamaNancy, nancy).
 abuelo(X,Y):-(padrede(X,Z), padrede(Z,Y));(padrede(X,Z), madrede(Z,Y)).
 abuela(X,Y):-(madrede(X,Z), madrede(Z,Y));(madrede(X,Z), padrede(Z,Y)).
 
+abuelos_paternos(X,Y):-
+    (padrede(X,Z), padrede(Z,Y));
+    (madrede(X,Z), padrede(Z,Y)).
+
+abuelos_maternos(X,Y):-
+    (padrede(X,Z), madrede(Z,Y));
+    (madrede(X,Z), madrede(Z,Y)).
+
+abuelo_paterno(X,Y):-
+    hombre(X),
+    abuelos_paternos(X,Y), !.
+
+abuelo_materno(X,Y):-
+    hombre(X),
+    abuelos_maternos(X,Y), !.
+
+abuela_paterna(X,Y):-
+    mujer(X),
+    abuelos_paternos(X,Y), !.
+
+abuela_materna(X,Y):-
+    mujer(X),
+    abuelos_maternos(X,Y), !.
 
 hermanos(X,Y):- 
     padrede(P,X), padrede(P,Y), 
@@ -177,3 +200,11 @@ tia(X,Y):-
     (madrede(Z,Y), hermanade(Z,X));
     (padrede(Z,Y), hermanade(Z,X));
     (esposode(Z,X), padrede(K,Y), hermanode(Z, K)).
+
+tios(X,Y):-
+    tio(X,Y);
+    tia(X,Y).
+
+primos(X,Y):-
+    tio(Z,X),
+    padrede(Z,Y).
