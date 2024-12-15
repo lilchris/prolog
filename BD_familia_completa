@@ -1,0 +1,179 @@
+hombre(mauricio).
+hombre(gabriel).
+hombre(don_gabriel).
+hombre(juan_carlos).
+hombre(gerardo).
+hombre(omar).
+hombre(arturo).
+hombre(claudio).
+hombre(papaSylvia).
+hombre(papaSylvia).
+hombre(christian).
+hombre(mauricioJr).
+hombre(gabito).
+hombre(benjamin).
+hombre(juan_carlitos).
+hombre(gerardoJr).
+hombre(arturito).
+hombre(claudito).
+mujer(sylvia).
+mujer(chayo).
+mujer(maricruz).
+mujer(carmina).
+mujer(montse).
+mujer(nancy).
+mujer(marilu).
+mujer(monica).
+mujer(abuelaSylvia).
+mujer(daniella).
+mujer(almendra).
+mujer(luciana).
+mujer(lucy).
+mujer(sylvia).
+
+padre(mauricio).
+padre(gabriel).
+padre(don_gabriel).
+padre(juan_carlos).
+padre(gerardo).
+padre(omar).
+padre(arturo).
+padre(claudio).
+padre(papaSylvia).
+padre(papaClaudio).
+padre(papaChayo).
+padre(papaCarmina).
+padre(papaMontse).
+padre(papaNancy).
+madre(sylvia).
+madre(chayo).
+madre(maricruz).
+madre(carmina).
+madre(montse).
+madre(nancy).
+madre(marilu).
+madre(monica).
+madre(abuelaSylvia).
+madre(abuelaSylvia).
+madre(mamaClaudio).
+madre(mamaChayo).
+madre(mamaCarmina).
+madre(mamaMontse).
+madre(mamaNancy).
+
+esposode(don_gabriel, maricruz).
+esposode(papaSylvia, abuelaSylvia).
+esposode(papaClaudio, mamaClaudio).
+esposode(papaChayo, mamaChayo).
+esposode(papaCarmina, mamaCarmina).
+esposode(papaMontse, mamaMontse).
+esposode(papaNancy, mamaNancy).
+esposode(mauricio, sylvia).
+esposode(gabriel, chayo).
+esposode(juan_carlos, carmina).
+esposode(gerardo, marilu).
+esposode(omar, nancy).
+esposode(claudio, monica).
+
+padrede(mauricio, christian).
+padrede(mauricio, mauricioJr).
+padrede(mauricio, daniella).
+padrede(gabriel, gabito).
+padrede(gabriel, benjamin).
+padrede(gabriel, almendra).
+padrede(don_gabriel, mauricio).
+padrede(don_gabriel, gabriel).
+padrede(don_gabriel, juan_carlos).
+padrede(don_gabriel, gerardo).
+padrede(don_gabriel, omar).
+padrede(don_gabriel, monica).
+padrede(don_gabriel, arturo).
+padrede(juan_carlos, juan_carlitos).
+padrede(gerardo, luciana).
+padrede(gerardo, gerardoJr).
+padrede(omar, lucy).
+padrede(arturo, arturito).
+padrede(claudio, claudito).
+padrede(papaSylvia, sylvia).
+padrede(papaClaudio, claudio).
+padrede(papaChayo, chayo).
+padrede(papaCarmina, carmina).
+padrede(papaMontse, montse).
+padrede(papaNancy, nancy).
+
+
+madrede(sylvia, christian).
+madrede(sylvia, mauricioJr).
+madrede(sylvia, daniella).
+madrede(chayo, gabito).
+madrede(chayo, benjamin).
+madrede(chayo, almendra).
+madrede(maricruz, mauricio).
+madrede(maricruz, gabriel).
+madrede(maricruz, juan_carlos).
+madrede(maricruz, gerardo).
+madrede(maricruz, monica).
+madrede(maricruz, omar).
+madrede(maricruz, arturo).
+madrede(carmina, juan_carlitos).
+madrede(montse, luciana).
+madrede(montse, gerardoJr).
+madrede(nancy, lucy).
+madrede(marilu, arturito).
+madrede(abuelaSylvia, sylvia).
+madrede(mamaClaudio, claudio).
+madrede(mamaChayo, chayo).
+madrede(mamaCarmina, carmina).
+madrede(mamaMontse, montse).
+madrede(mamaNancy, nancy).
+
+
+abuelo(X,Y):-(padrede(X,Z), padrede(Z,Y));(padrede(X,Z), madrede(Z,Y)).
+abuela(X,Y):-(madrede(X,Z), madrede(Z,Y));(madrede(X,Z), padrede(Z,Y)).
+
+
+hermanos(X,Y):- 
+    padrede(P,X), padrede(P,Y), 
+    madrede(M,X), madrede(M,Y), 
+    X \= Y.
+
+hermanode(X,Y):- 
+    padrede(P,X), padrede(P,Y), 
+    madrede(M,X), madrede(M,Y), 
+    hombre(Y),
+    X \= Y.
+
+hermanade(X,Y):- 
+    padrede(P,X), padrede(P,Y), 
+    madrede(M,X), madrede(M,Y), 
+    mujer(Y),
+    X \= Y.
+
+cunado(X,Y):-
+    padrede(A, X),
+    padrede(B, Y),
+    A\=B,
+    padre(X), (madre(Y);padre(Y)),
+    \+ esposode(X,Y),
+    \+ hermanos(X,Y).
+
+cunada(X,Y):-
+    madrede(A, X),
+    padrede(B, Y),
+    A\=B,
+    madre(X), (madre(Y);padre(Y)),
+    \+ esposode(Y,X),
+    \+ hermanos(X,Y).
+
+
+tio(X,Y):-
+    hombre(X),
+    (padrede(Z,Y), hermanode(X,Z));
+    (madrede(Z,Y), hermanode(X,Z));
+    (esposode(X,Z), (padrede(K,Y);madrede(K,Y)), hermanade(K, Z)).
+
+tia(X,Y):-
+    mujer(X),
+    (madrede(Z,Y), hermanade(Z,X));
+    (padrede(Z,Y), hermanade(Z,X));
+    (esposode(Z,X), padrede(K,Y), hermanode(Z, K)).
