@@ -1,10 +1,107 @@
-1 Problema: Dada una lista como `[1, [2, [3, 4], 5], [6]]`, genera `[1, 2, 3, 4, 5, 6]`.
-flatten([1, [2, [3, 4], 5], [6]], Result).
+%1 Problema: Dada una lista como `[1, [2, [3, 4], 5], [6]]`, genera `[1, 2, 3, 4, 5, 6]`.
+aplanar_lista :-
+    flatten([1, [2, [3, 4], 5], [6]], Result),
+    format('Lista plana: ~w~n', [Result]).
 
-2 Dada la lista `[a, b, c]`, genera las permutaciones:
-permutation([a, b, c], Perm).
+%2 Dada la lista `[a, b, c]`, genera las permutaciones:
+generar_permutaciones(Lista) :-
+    permutation(Lista, Permutacion),
+    writeln(Permutacion),
+    fail.
+generar_permutaciones(_). 
 
-3 Utiliza `subconjunto/2` para encontrar todos los subconjuntos posibles de una lista.
 
-4Usa Problema: Encuentra todos los números primos entre 1 y 20.
+%3 Utiliza `subconjunto/2` para encontrar todos los subconjuntos posibles de una lista.
 
+subconjunto([], []).
+subconjunto([H|T], [H|R]) :-
+    subconjunto(T, R).
+subconjunto([_|T], R) :-
+    subconjunto(T, R).
+
+generar_subconjuntos(Lista) :-
+    findall(Subconjunto, subconjunto(Lista, Subconjunto), Subconjuntos),
+    imprimir_lista(Subconjuntos).
+
+% Imprime cada elemento de una lista en una nueva línea.
+imprimir_lista([]).
+imprimir_lista([Cabeza|Cola]) :-
+    writeln(Cabeza),
+    imprimir_lista(Cola).
+
+%5  Combina [1, 2] y [3, 4] en [1, 2, 3, 4].
+concatenar(Lista1, Lista2, Resultado) :-
+    append(Lista1, Lista2, Resultado).
+
+%6
+eliminar_duplicados([]) :-
+    format('Lista sin duplicados: []~n').
+
+% Regla 1: Si el elemento ya está en la cola, lo omitimos
+eliminar_duplicados([Cabeza|Cola]) :-
+    member(Cabeza, Cola),
+    eliminar_duplicados(Cola).
+
+% Regla 2: Si el elemento no está en la cola, lo imprimimos y continuamos
+eliminar_duplicados([Cabeza|Cola]) :-
+    \+ member(Cabeza, Cola),
+    format('~w ', [Cabeza]),
+    eliminar_duplicados(Cola).
+
+%9 Encuentra todas las rutas posibles entre dos nodos en un grafo utilizando findall
+arco(a, b).
+arco(b, c).
+arco(c, d).
+arco(a, d).
+
+% Predicado principal para encontrar todas las rutas de Inicio a Fin
+rutas(Inicio, Fin) :-
+    findall(Camino, buscar_camino(Inicio, Fin, [Inicio], Camino), Rutas),
+    imprimir_rutas(Rutas).
+
+% Predicado recursivo para buscar caminos
+buscar_camino(Nodo, Nodo, CaminoActual, CaminoFinal) :-
+    reverse(CaminoActual, CaminoFinal).  % Se invierte para mostrar el camino en orden correcto
+
+buscar_camino(NodoActual, NodoFinal, CaminoActual, CaminoFinal) :-
+    arco(NodoActual, NodoSiguiente),
+    \+ member(NodoSiguiente, CaminoActual),     % Evitar ciclos
+    buscar_camino(NodoSiguiente, NodoFinal, [NodoSiguiente|CaminoActual], CaminoFinal).
+
+% Predicado auxiliar para imprimir todas las rutas
+imprimir_rutas([]) :-
+    format('No se encontraron rutas.~n').
+
+imprimir_rutas([H|T]) :-
+    format('Ruta encontrada: ~w~n', [H]),
+    imprimir_rutas(T).
+
+
+%10 Usa findall para generar combinaciones posibles de elementos de una lista con repetición.
+combinaciones_con_repeticion(Lista, Tamaño) :-
+    combinacion(Lista, Tamaño, Combinacion),
+    format('~w~n', [Combinacion]),
+    fail.
+combinaciones_con_repeticion(_, _).
+
+% Caso base: una combinación de tamaño 0 es una lista vacía
+combinacion(_, 0, []).
+
+% Caso recursivo: construir una combinación de tamaño N
+combinacion(Lista, Tamaño, [Elemento|Resto]) :-
+    Tamaño > 0,
+    member(Elemento, Lista),
+    Tamaño1 is Tamaño - 1,
+    combinacion(Lista, Tamaño1, Resto).
+
+
+
+%consult('archivo.pl').
+%aplanar_lista.
+%generar_permutaciones([a, b, c]).
+%generar_subconjuntos([1, 2, 3]).
+%generar_subconjuntos([1, 2, 3]).
+%concatenar([1, 2], [3, 4], Resultado).
+%eliminar_duplicados([1, 2, 2, 3, 3, 3, 4]).
+%combinaciones_con_repeticion([a, b], 2).
+%rutas(a, d).
