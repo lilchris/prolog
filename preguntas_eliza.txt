@@ -39,7 +39,9 @@ eliza quienes son cunados de omar
 eliza quienes son primos de christian
 
 
-
+eliza te gustan las computadoras
+eliza te gustan los videojuegos
+eliza que te gusta
 
 
 
