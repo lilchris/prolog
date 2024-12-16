@@ -104,10 +104,38 @@ template([cuales, procesadores, tiene, s(_)], [flag_procesadores], [3]).
 template([cuales, procesadores, usa, s(_)], [flag_procesadores], [3]).
 template([cuales, companias, s(_)], [flag_compania], [2]).
 
+%Acertijo
+template([eliza, resuelve, el, acertijo, de, los, medicos], [flag_acertijo], [6]).
+template([eliza, cual, es, el, hospital, de, s(_)], [flag_hospital], [6]).
+template([eliza, quien, trabaja, en, el, hospital, s(_)], [flag_quien_hosp], [6]).
+template([eliza, a, quien, le, interesa, la, s(_)], [flag_quien_interes], [6]).
+template([eliza, que, le, interesa, a, s(_)], [flag_que_interes], [5]).
+template([eliza, que, instrumento, utiliza, s(_)], [flag_que_instrumento], [4]).
+template([eliza, que, equipo, utiliza, s(_)], [flag_que_instrumento], [4]).
+template([eliza, quien, utiliza, el, s(_)], [flag_quien_instrumeto], [4]).
+template([eliza, en, donde, trabaja, s(_)], [flag_quien_hosp], [4]).
+template([eliza, quien, estudio, s(_)], [flag_quien_esp], [3]).
+template([eliza, que, estudio, s(_)], [flag_que_esp], [3]).
+
+
+template([resuelve, el, acertijo, de, los, medicos], [flag_acertijo], [5]).
+template([cual, es, el, hospital, de, s(_)], [flag_hospital], [5]).
+template([quien, trabaja, en, el, hospital, s(_)], [flag_quien_hosp], [5]).
+template([a, quien, le, interesa, la, s(_)], [flag_quien_interes], [5]).
+template([que, le, interesa, a, s(_)], [flag_que_interes], [4]).
+template([en, donde, trabaja, s(_)], [flag_quien_hosp], [3]).
+template([que, instrumento, utiliza, s(_)], [flag_que_instrumento], [3]).
+template([que, equipo, utiliza, s(_)], [flag_que_instrumento], [3]).
+template([quien, utiliza, el, s(_)], [flag_quien_instrumeto], [3]).
+template([quien, estudio, s(_)], [flag_quien_esp], [2]).
+template([que, estudio, s(_)], [flag_que_esp], [2]).
+
 
 template(_, ['Por favor, explica un poco más.'], []).
 
 % Base de datos
+%Familia
+
 hombre(mauricio).
 hombre(gabriel).
 hombre(don_gabriel).
@@ -320,7 +348,11 @@ abuela_materna(X,Y):-
     mujer(X),
     abuelos_maternos(X,Y), !.
 
+%Termina Familia
+
+
 %Aquinator
+
 compania(nintendo).
 compania(microsoft).
 compania(sony).
@@ -489,6 +521,73 @@ comparar_vejez(C1, C2) :-
     ; format( "~w (de anho ~w) es más antiguo que ~w (de anho ~w).~n", [C2, V2, C1, V1])
     ).
 
+%Termina Aquinator
+
+%Acertijo de los medicos
+
+medicos(Medicos) :-
+    Medicos = [ 
+        medico(ana, E1, H1, EQ1, I1),
+        medico(bruno, E2, H2, EQ2, I2),
+        medico(carla, E3, H3, EQ3, I3),
+        medico(diego, E4, H4, EQ4, I4),
+        medico(elena, E5, H5, EQ5, I5)
+    ],
+
+    Especialidades = [cardiologia, neurologia, oncologia, pediatria, dermatologia],
+    Hospitales = [general, regional, universitario, privado, militar],
+    Equipos = [ecografo, resonancia, tomografo, dermatoscopio, electrocardiografo],
+    Intereses = [genetica, farmacologia, inmunologia, bioetica, microbiologia],
+
+    permutacion(Especialidades, [E1, E2, E3, E4, E5]),
+    permutacion(Hospitales, [H1, H2, H3, H4, H5]),
+    permutacion(Equipos, [EQ1, EQ2, EQ3, EQ4, EQ5]),
+    permutacion(Intereses, [I1, I2, I3, I4, I5]),
+
+    % pista 1
+    H3 \= general, H3 \= privado, E3 \= neurologia,
+    %pista 2
+    member(medico(_, cardiologia, militar, electrocardiografo, _), Medicos),
+    \+ member(medico(diego, cardiologia, militar, electrocardiografo, _), Medicos),
+    %pista 3
+    member(medico(bruno, _, H2, _, farmacologia), Medicos),
+    H2 \= regional, H2 \= militar,
+    %pista 4
+    member(medico(_, pediatria, H4, ecografo, _), Medicos),
+    H4 \= universitario, H4 \= militar,
+    %pista5
+    member(medico(_, oncologia, general, tomografo, _), Medicos),
+    %pista 6
+    member(medico(_, _, _, resonancia, inmunologia), Medicos),
+    \+ member(medico(elena, _, _, resonancia, _), Medicos),
+    %pista 7
+    member(medico(_, dermatologia, regional, _, _), Medicos),
+    %pista 8
+    member(medico(elena, _, _, EQ5, bioetica), Medicos),
+    EQ5 \= electrocardiografo,
+    %pista 9
+    member(medico(diego, _, _, _, microbiologia), Medicos),
+    %pistilla 10
+    member(medico(_, _, universitario, dermatoscopio, _), Medicos),!.
+
+    %format('Ana estudió ~w en el hospital ~w, utiliza un ~w y le interesa la ~w.~n', [E1, H1, EQ1, I1]),
+    %format('Bruno estudió ~w en el hospital ~w, utiliza un ~w y le interesa la ~w.~n', [E2, H2, EQ2, I2]),
+    %format('Carla estudió ~w en el hospital ~w, utiliza un ~w y le interesa la ~w.~n', [E3, H3, EQ3, I3]),
+    %format('Diego estudió ~w en el hospital ~w, utiliza un ~w y le interesa la ~w.~n', [E4, H4, EQ4, I4]),
+    %format('Elena estudió ~w en el hospital ~w, utiliza un ~w y le interesa la ~w.~n', [E5, H5, EQ5, I5]),!.
+
+
+permutacion([], []).
+permutacion(L, [H|T]) :- 
+    select(H, L, R), 
+    permutacion(R, T).
+
+
+
+
+%Termina Acertijo de los medicos
+
+
 % Coincidencias
 match([], []).
 match([S|Stim], [I|Input]) :-
@@ -636,46 +735,134 @@ replace0([I|_], Input, _, Resp, R) :-
     format(atom(R), "La consola más veloz es ~w con una velocidad de ~w MHz.~n", [Consola, Velocidad])
     , !.
     
-replace0([I|_], Input, _, Resp, _) :-
+replace0([I|_], Input, _, Resp, R) :-
     nth0(I, Input, Atom),
     nth0(7, Input, Mato),
     Resp = [flag_mas_rapido | _],
-    findall(_, (comparar_velocidad(Atom, Mato)), _)
-    ,!.  
-replace0([I|_], Input, _, Resp, _) :-
+    findall(_, (comparar_velocidad(Atom, Mato)), _),
+    format(atom(R), '', []),!.  
+replace0([I|_], Input, _, Resp, R) :-
     nth0(I, Input, Atom),
     nth0(7, Input, Mato),
     Resp = [flag_mas_lento | _],
-    findall(_, (comparar_lentitud(Atom, Mato)), _)
-    ,!.
-replace0([I|_], Input, _, Resp, _) :-
+    findall(_, (comparar_lentitud(Atom, Mato)), _),
+    format(atom(R), '', []),!.
+replace0([I|_], Input, _, Resp, R) :-
     nth0(I, Input, Atom),
     nth0(8, Input, Mato),
     Resp = [flag_mas_nuevo | _],
-    findall(_, (comparar_modernidad(Atom, Mato)), _)
-    ,!.
-replace0([I|_], Input, _, Resp, _) :-
+    findall(_, (comparar_modernidad(Atom, Mato)), _),
+    format(atom(R), '', []),!.
+replace0([I|_], Input, _, Resp, R) :-
     nth0(I, Input, Atom),
     nth0(8, Input, Mato),
     Resp = [flag_mas_viejo | _],
-    findall(_, (comparar_vejez(Atom, Mato)), _)
-    ,!.
-replace0([I|_], Input, _, Resp, _) :-
+    findall(_, (comparar_vejez(Atom, Mato)), _),
+    format(atom(R), '', []),!.
+replace0([I|_], Input, _, Resp, R) :-
     nth0(I, Input, Atom),
     Resp = [flag_procesadores | _],
     writeln(Atom),
     findall([X,Y], (consola(Atom, X), procesador(X, Y)), Results),
     forall(member([Consola, Procesador], Results),
            format("~w: ~w~n", [Consola, Procesador])), 
-           format(atom(_), '', []),
+           format(atom(R), '', []),
            !.
 
 
-
-
-
-
 %Termina Aquinator
+
+%Acertijo
+
+replace0([I|_], Input, _, Resp, R) :-
+    nth0(I, Input, _),
+    Resp = [flag_acertijo | _],
+    findall(Medicos, medicos(Medicos), Results),
+    flatten(Results, Res),
+    Res = [ListaMedicos],
+    writeln(ListaMedicos),
+    format(atom(R), '', []),!.
+
+replace0([I|_], Input, _, Resp, R) :-
+    nth0(I, Input, Atom),
+    Resp = [flag_hospital | _],
+    findall(Medicos, medicos(Medicos), Results),
+    Results = [ListaMedicos],
+    member(medico(Atom, _, Hospital, _, _), ListaMedicos), 
+    format_response('el', 'hospital', Atom, [Hospital], R), !.
+    %format(atom(R), '', []),!.
+
+replace0([I|_], Input, _, Resp, R) :-
+    nth0(I, Input, Atom),
+    Resp = [flag_quien_hosp | _],
+    findall(Medicos, medicos(Medicos), Results),
+    Results = [ListaMedicos],
+    member(medico(Dr, _, Atom, _, _), ListaMedicos), 
+    format_response('atiende el', 'hospital', Atom, [Dr], R), !.
+    %format(atom(R), '', []),!. 
+
+replace0([I|_], Input, _, Resp, R) :-
+    nth0(I, Input, Atom),
+    Resp = [flag_quien_esp | _],
+    findall(Medicos, medicos(Medicos), Results),
+    Results = [ListaMedicos],
+    member(medico(Dr, Atom, _, _, _), ListaMedicos), 
+    format_response('estudio la', 'carrera', Atom, [Dr], R), !.
+    %format(atom(R), '', []),!.
+replace0([I|_], Input, _, Resp, R) :-
+    nth0(I, Input, Atom),
+    Resp = [flag_que_esp | _],
+    findall(Medicos, medicos(Medicos), Results),
+    Results = [ListaMedicos],
+    member(medico(Atom, Especialidad, _ , _, _), ListaMedicos), 
+    format_response('el', 'hospital', Atom, [Especialidad], R), !.
+    %format(atom(R), '', []),!. 
+replace0([I|_], Input, _, Resp, R) :-
+    nth0(I, Input, Atom),
+    Resp = [flag_que_instrumento | _],
+    findall(Medicos, medicos(Medicos), Results),
+    Results = [ListaMedicos],
+    member(medico(Atom, _, _ , Instrumento, _), ListaMedicos), 
+    format_response('el', 'instrumento', Atom, [Instrumento], R), !.
+    %format(atom(R), '', []),!. 
+replace0([I|_], Input, _, Resp, R) :-
+    nth0(I, Input, Atom),
+    Resp = [flag_quien_instrumeto | _],
+    findall(Medicos, medicos(Medicos), Results),
+    Results = [ListaMedicos],
+    member(medico(Dr, _, _ , Atom, _), ListaMedicos), 
+    format_response('el', 'instrumento', Atom, [Dr], R), !.
+    %format(atom(R), '', []),!.     
+replace0([I|_], Input, _, Resp, R) :-
+    nth0(I, Input, Atom),
+    Resp = [flag_que_interes | _],
+    findall(Medicos, medicos(Medicos), Results),
+    Results = [ListaMedicos],
+    member(medico(Atom, _, _ , _, Interes), ListaMedicos), 
+    format_response('el', 'interes', Atom, [Interes], R), !.
+    %format(atom(R), '', []),!. 
+replace0([I|_], Input, _, Resp, R) :-
+    nth0(I, Input, Atom),
+    Resp = [flag_quien_interes | _],
+    findall(Medicos, medicos(Medicos), Results),
+    Results = [ListaMedicos],
+    member(medico(Dr, _, _ , _, Atom), ListaMedicos), 
+    format_response('el', 'interes', Atom, [Dr], R), !.
+    %format(atom(R), '', []),!.   
+    
+
+replace0([I|_], Input, _, Resp, R) :-
+    nth0(I, Input, _),
+    Resp = [prototipo | _],
+    findall(Medicos, medicos(Medicos), Results),
+    writeln(Results),
+    Results = [ListaMedicos],
+    member(medico(diego, _, Hospital, _, _), ListaMedicos), writeln(Hospital),
+    format(atom(R), '', []),!.
+
+%Termina Acertijo
+
+
 
 replace0([I|Index], Input, N, Resp, R) :-
     nth0(I, Input, Atom),
