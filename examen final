@@ -1,44 +1,43 @@
-1.Los guardianes de los templos
-Cuatro guardianes (Apolo, Hécate, Ares y Hermes) custodian templos mitológicos asociados con diferentes elementos (fuego, agua, tierra y aire). 
-Sabemos que:
+guardián(apolo).
+guardián(hécate).
+guardián(ares).
+guardián(hermes).
 
-Apolo no cuida el templo de fuego ni el de tierra.
-Hécate no cuida el templo de aire.
-Ares no cuida el templo de agua ni de aire.
-Hermes cuida el templo de fuego o de agua.
-Pregunta: ¿Qué templo cuida cada guardián?
+% Definimos los templos
+templo(fuego).
+templo(agua).
+templo(tierra).
+templo(aire).
 
+% Predicado principal para resolver el problema
+resolver :-
+    % Asignar un templo a cada guardián
+    templo_de(apolo, TemploApolo),
+    templo_de(hécate, TemploHecate),
+    templo_de(ares, TemploAres),
+    templo_de(hermes, TemploHermes),
 
-%código para generar respuesta utilizando predicados mitológicos vistos ayer en clase 
-% Definición de guardianes y templos
-guardianes([apolo, hecate, ares, hermes]).
-templos([fuego, agua, tierra, aire]).
+    % Restricciones específicas
+    TemploApolo \= fuego, TemploApolo \= tierra,
+    TemploHecate \= aire,
+    TemploAres \= agua, TemploAres \= aire,
+    (TemploHermes = fuego ; TemploHermes = agua),
 
-% Restricciones de cada guardián
-restricciones(apolo, Templo) :- 
-    \+ member(Templo, [fuego, tierra]). % Apolo no puede cuidar fuego ni tierra
-restricciones(hecate, Templo) :- 
-    \+ member(Templo, [aire]).          % Hecate no puede cuidar aire
-restricciones(ares, Templo) :- 
-    \+ member(Templo, [agua, aire]).    % Ares no puede cuidar agua ni aire
-restricciones(hermes, Templo) :- 
-    member(Templo, [fuego, agua]).      % Hermes cuida fuego o agua
+    % Reglas para asegurar que todos los templos son diferentes
+    TemploApolo \= TemploHecate,
+    TemploApolo \= TemploAres,
+    TemploApolo \= TemploHermes,
+    TemploHecate \= TemploAres,
+    TemploHecate \= TemploHermes,
+    TemploAres \= TemploHermes,
 
-% Verificar que una asignación cumpla las restricciones
-verificar_asignacion(Guardia-Templo) :- 
-    restricciones(Guardia, Templo).
+    % Mostrar los resultados
+    format('Apolo cuida el templo de ~w~n', [TemploApolo]),
+    format('Hécate cuida el templo de ~w~n', [TemploHecate]),
+    format('Ares cuida el templo de ~w~n', [TemploAres]),
+    format('Hermes cuida el templo de ~w~n', [TemploHermes]).
 
-% Predicado principal
-asignar_guardianes(Asignaciones) :-
-    guardianes(Guardianes),         % Obtener lista de guardianes
-    templos(Templos),               % Obtener lista de templos
-    permutation(Templos, Orden),    % Generar todas las permutaciones de templos
-    maplist(pair_guardian_templo, Guardianes, Orden, Asignaciones), % Emparejar
-    maplist(verificar_asignacion, Asignaciones). % Verificar restricciones
-
-% Crear pares de guardián-templo
-pair_guardian_templo(Guardian, Templo, Guardian-Templo).
-
-
-%Preguntar por el resultado en la terminal:
-?- asignar_guardianes(Asignaciones).
+% Predicado para asignar un templo a un guardián
+templo_de(Guardián, Templo) :-
+    templo(Templo),
+    guardián(Guardián).
