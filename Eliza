@@ -130,6 +130,17 @@ template([quien, utiliza, el, s(_)], [flag_quien_instrumeto], [3]).
 template([quien, estudio, s(_)], [flag_quien_esp], [2]).
 template([que, estudio, s(_)], [flag_que_esp], [2]).
 
+%gustos
+template([eliza, te, gustan, las, s(_)], [flagLike], [4]).
+template([eliza, te, gustan, los, s(_)], [flagLike], [4]).
+template([eliza, que, te, gusta], [flagLikes], [3]).
+template([eliza, que, te, gusta, _], [flagLikes], [3]).
+
+
+template([te, gustan, las, s(_)], [flagLike], [3]).
+template([te, gustan, los, s(_)], [flagLike], [3]).
+template([que, te, gusta], [flagLikes], [2]).
+template([que, te, gusta, _], [flagLikes], [2]).
 
 template(_, ['Por favor, explica un poco más.'], []).
 
@@ -583,9 +594,31 @@ permutacion(L, [H|T]) :-
     permutacion(R, T).
 
 
-
-
 %Termina Acertijo de los medicos
+
+%Gustos
+
+likes(comics).
+likes(computadoras).
+likes(mujeres).
+likes(revistas).
+likes(motos).
+likes(carros).
+likes(deportes).
+likes(eventos).
+likes(fiestas).
+likes(viajes).
+likes(criptomonedas).
+likes(tacos).
+
+elizaLikes(X, R):- 
+    likes(X), 
+    format_response('si, me', 'gusta', "pasatiempo", [X], R), !.
+elizaLikes(X, R):- 
+    \+likes(X), 
+    format_response('no, no me', 'gusta', "pasatiempo", [X], R), !.
+
+%Terminan Gustos
 
 
 % Coincidencias
@@ -861,6 +894,22 @@ replace0([I|_], Input, _, Resp, R) :-
     format(atom(R), '', []),!.
 
 %Termina Acertijo
+
+%Gustos
+
+replace0([I|_], Input, _, Resp, R) :-
+    nth0(I, Input, _),
+    Resp = [flagLikes | _],
+    findall(X, (likes(X)), Results), 
+    format_response('me', 'gusta', "pasatiempo", Results, R), !.
+
+replace0([I|_], Input, _, Resp, R):-
+	nth0(I, Input, Atom),
+	nth0(0, Resp, X),
+	X == flagLike,
+	elizaLikes(Atom, R).
+
+%Terminan Gustos
 
 
 
